@@ -16,20 +16,7 @@ namespace Quantik
 
         void Start()
         {
-            positions = new Node[gridSize.x * gridSize.y];
-
-            for (var k = 0; k < gridSize.y; k++)
-            {
-                for (var i = 0; i < gridSize.x; i++)
-                {
-                    var location = transform.position;
-                    location += new Vector3(k * boardWidth / (gridSize.y - 1), 0, i * boardWidth / (gridSize.x - 1));
-                    location -= new Vector3(boardWidth / 2, 0, boardWidth / 2);
-                    var _node = Instantiate(node, location, Quaternion.identity, transform);
-
-                    positions[k * gridSize.x + i] = _node;
-                }
-            }
+            Clear();
         }
 
         public void ClearHighlights()
@@ -91,6 +78,29 @@ namespace Quantik
             }
 
             return true;
+        }
+
+        public void Clear()
+        {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            positions = new Node[gridSize.x * gridSize.y];
+
+            for (var k = 0; k < gridSize.y; k++)
+            {
+                for (var i = 0; i < gridSize.x; i++)
+                {
+                    var location = transform.position;
+                    location += new Vector3(k * boardWidth / (gridSize.y - 1), 0, i * boardWidth / (gridSize.x - 1));
+                    location -= new Vector3(boardWidth / 2, 0, boardWidth / 2);
+                    var _node = Instantiate(node, location, Quaternion.identity, transform);
+
+                    positions[k * gridSize.x + i] = _node;
+                }
+            }
         }
 
         public void HighlightForPosition(Vector2Int position, Color highlight)

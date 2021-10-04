@@ -8,8 +8,10 @@ public class WinningUI : MonoBehaviour
 
     public void Start()
     {
-        panel.SetActive(false);
+        HideMenu();
     }
+
+    public void HideMenu() => panel.SetActive(false);
 
     public void SetWinner(int playerNumber)
     {

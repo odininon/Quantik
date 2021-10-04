@@ -50,4 +50,6 @@ public class GamePlayUI : MonoBehaviour
     {
         winningUI.SetWinner(playerNumber);
     }
+
+    public void HideMenu() => winningUI.HideMenu();
 }

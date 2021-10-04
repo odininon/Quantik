@@ -9,6 +9,7 @@ namespace Quantik
     public class GameManager : MonoBehaviour
     {
         public GamePlayUI gamePlayUI;
+        public PauseMenu pauseMenu;
 
         [Header("Highlights")]
         public Color validHighlight;
@@ -20,9 +21,9 @@ namespace Quantik
 
         [Header("Player Pieces")]
         public HashSet<GamePiece> uniquePieces = new HashSet<GamePiece>();
-        public List<GamePiece> playerPieces;
-        public List<GamePiece> player1Pieces;
-        public List<GamePiece> player2Pieces;
+        public GamePieceLoadout gamePieceLoadout;
+        private List<GamePiece> player1Pieces = new List<GamePiece>();
+        private List<GamePiece> player2Pieces = new List<GamePiece>();
 
         [Header("Game State")]
         public int currentPlayer = 0;
@@ -37,27 +38,16 @@ namespace Quantik
             mainCamera = Camera.main;
             gameBoard = GetComponent<GameGrid>();
 
-            foreach (var piece in playerPieces)
-            {
-                uniquePieces.Add(piece);
-            }
-
-            player1Pieces.AddRange(playerPieces);
-            player2Pieces.AddRange(playerPieces);
-
-            gamePlayUI.SetListForPlayer(player1Pieces, 0);
-            gamePlayUI.SetListForPlayer(player2Pieces, 1);
-
-            gamePlayUI.pieceSelected += (index) =>
-            {
-                selectedPiece = index;
-            };
-
-            gamePlayUI.SetCurrentPlayer(currentPlayer + 1);
+            RestartGame();
         }
         // Update is called once per frame
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                pauseMenu.Toggle();
+            }
+
             gameBoard.ClearHighlights();
 
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -95,6 +85,37 @@ namespace Quantik
                     }
                 }
             }
+        }
+
+        public void RestartGame()
+        {
+            gamePlayUI.HideMenu();
+            pauseMenu.HideMenu();
+            gameBoard.Clear();
+            var playerPieces = gamePieceLoadout.pieces;
+
+            uniquePieces.Clear();
+
+            foreach (var piece in playerPieces)
+            {
+                uniquePieces.Add(piece);
+            }
+
+            player1Pieces.Clear();
+            player2Pieces.Clear();
+
+            player1Pieces.AddRange(playerPieces);
+            player2Pieces.AddRange(playerPieces);
+
+            gamePlayUI.SetListForPlayer(player1Pieces, 0);
+            gamePlayUI.SetListForPlayer(player2Pieces, 1);
+
+            gamePlayUI.pieceSelected += (index) =>
+            {
+                selectedPiece = index;
+            };
+
+            gamePlayUI.SetCurrentPlayer(currentPlayer + 1);
         }
 
         private void hasPlayerWon(Vector2Int selectedNode)
