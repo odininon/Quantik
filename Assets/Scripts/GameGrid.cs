@@ -85,10 +85,13 @@ namespace Quantik
 
         public void Clear()
         {
-            // foreach (Transform child in transform)
-            // {
-            //     Destroy(child.gameObject);
-            // }
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.GetComponent<Node>() != null)
+                {
+                    Destroy(child.gameObject);
+                }
+            }
 
             positions = new Node[gridSize.x * gridSize.y];
 
@@ -224,12 +227,9 @@ namespace Quantik
 
         public bool DoesNodeSectorContainAllPieces(Vector2Int selectedNode, List<GamePiece> gamePieces)
         {
-            var p = selectedNode.y * gridSize.x + selectedNode.x;
+            var _positions = GetPositionsForSector(GetSectorForPosition(selectedNode));
 
-            var sector = GetSectorForPosition(p);
-            var intPositions = GetPositionsForSector(sector);
-
-            foreach (var position in intPositions)
+            foreach (var position in _positions)
             {
                 var piece = positions[position].gamePiecePlacement.gamePiece;
                 gamePieces.Remove(piece);
