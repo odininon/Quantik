@@ -61,20 +61,20 @@ namespace Quantik
                     return;
                 }
 
-                Vector2Int? selectedNode = gameBoard.GetNodePosition(node);
+                Vector2Int selectedNode = gameBoard.GetNodePosition(node);
 
                 var heldPiece = currentPlayer == 0 ? player1Pieces[selectedPiece] : player2Pieces[selectedPiece];
 
-                if (selectedNode.HasValue && heldPiece != null)
+                if (heldPiece != null)
                 {
-                    var isValidPlacement = gameBoard.IsPlacementAllowed(heldPiece, selectedNode.Value, currentPlayer);
-                    gameBoard.HighlightForPosition(selectedNode.Value, isValidPlacement ? validHighlight : invalidHighlight);
+                    var isValidPlacement = gameBoard.IsPlacementAllowed(heldPiece, selectedNode, currentPlayer);
+                    gameBoard.HighlightForPosition(selectedNode, isValidPlacement ? validHighlight : invalidHighlight);
 
                     if (Input.GetMouseButtonDown(0) && isValidPlacement)
                     {
                         node.PlacePiece(heldPiece, currentPlayer, currentPlayer == 0 ? player1Color : player2Color);
                         removePieceForPlayer(currentPlayer);
-                        hasPlayerWon(selectedNode.Value);
+                        hasPlayerWon(selectedNode);
 
                         selectedPiece = -1;
                         if (++currentPlayer > 1)

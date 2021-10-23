@@ -17,26 +17,36 @@ namespace Quantik
         private Color defaultColor;
         private Material material;
 
-        void Awake()
+        private Vector2Int gridPosition;
+
+        public void Awake()
         {
             material = visual.material;
             defaultColor = material.GetColor("_Color");
+            visual.GetComponent<MeshRenderer>().enabled = false;
         }
 
         public void Highlight(Color highlightColor)
         {
             material.SetColor("_Color", highlightColor);
+            visual.GetComponent<MeshRenderer>().enabled = true;
         }
 
         public void ClearHighlight()
         {
             material.SetColor("_Color", defaultColor);
+            visual.GetComponent<MeshRenderer>().enabled = false;
         }
 
         public void PlacePiece(GamePiece heldPiece, int currentPlayer, Color playerColor)
         {
             heldPiece.Spawn(transform, playerColor);
             gamePiecePlacement = new GamePiecePlacement { gamePiece = heldPiece, placedByPlayer = currentPlayer };
+        }
+
+        internal Vector2Int GetPosition()
+        {
+            return gridPosition;
         }
 
         public bool IsPlacedByOtherPlayer(int currentPlayer, GamePiece gamePiece)
@@ -67,6 +77,11 @@ namespace Quantik
         private bool IsPlacedByPlayer(int currentPlayer)
         {
             return gamePiecePlacement.placedByPlayer == currentPlayer;
+        }
+
+        internal void SetPosition(Vector2Int position)
+        {
+            this.gridPosition = position;
         }
     }
 }

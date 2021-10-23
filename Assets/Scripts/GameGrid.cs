@@ -8,6 +8,11 @@ namespace Quantik
     {
         public Vector2Int gridSize;
         public int boardWidth;
+
+        public float paddingTop;
+        public float paddingLeft;
+
+        public float nodeOffset;
         public float gizmoSphereWidth = 0.5f;
 
         [Header("Prefabs")]
@@ -27,22 +32,9 @@ namespace Quantik
             }
         }
 
-        public Vector2Int? GetNodePosition(Node node)
+        public Vector2Int GetNodePosition(Node node)
         {
-            Vector2Int? selectedNode = null;
-            for (var i = 0; i < positions.Length; i++)
-            {
-                if (positions[i] == node)
-                {
-                    var x = i % gridSize.x;
-                    var y = i / gridSize.x;
-
-                    selectedNode = new Vector2Int(x, y);
-                    break;
-                }
-            }
-
-            return selectedNode;
+            return node.GetPosition();
         }
 
         public void HighlightSector(int index)
@@ -77,36 +69,49 @@ namespace Quantik
                 }
             }
 
+            var _positions = GetPositionsForSector(GetSectorForPosition(selectedNode));
+
+            foreach (var position in _positions)
+            {
+                var node = positions[position];
+                if (node.IsPlacedByOtherPlayer(currentPlayer, heldPiece))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
         public void Clear()
         {
-            foreach (Transform child in transform)
-            {
-                Destroy(child.gameObject);
-            }
+            // foreach (Transform child in transform)
+            // {
+            //     Destroy(child.gameObject);
+            // }
 
             positions = new Node[gridSize.x * gridSize.y];
+
+            var location = transform.position + new Vector3(-boardWidth / 2 + paddingTop, 0, -boardWidth / 2 + paddingLeft);
 
             for (var k = 0; k < gridSize.y; k++)
             {
                 for (var i = 0; i < gridSize.x; i++)
                 {
-                    var location = transform.position;
-                    location += new Vector3(k * boardWidth / (gridSize.y - 1), 0, i * boardWidth / (gridSize.x - 1));
-                    location -= new Vector3(boardWidth / 2, 0, boardWidth / 2);
-                    var _node = Instantiate(node, location, Quaternion.identity, transform);
-
+                    var newLocation = location + new Vector3(2 * paddingTop * k, nodeOffset, 2 * paddingLeft * i);
+                    var _node = Instantiate(node, newLocation, Quaternion.identity, transform);
+                    _node.SetPosition(new Vector2Int(i, k));
                     positions[k * gridSize.x + i] = _node;
                 }
             }
+
         }
 
         public void HighlightForPosition(Vector2Int position, Color highlight)
         {
             HighlightColum(position.x, highlight);
             HighlightRow(position.y, highlight);
+            HighlightSector(position, highlight);
         }
 
         private void HighlightColum(int column, Color highlight)
@@ -124,6 +129,21 @@ namespace Quantik
             {
                 positions[row * gridSize.x + i].Highlight(highlight);
             }
+        }
+
+        private void HighlightSector(Vector2Int position, Color highlight)
+        {
+            var _positions = GetPositionsForSector(GetSectorForPosition(position));
+
+            foreach (var pos in _positions)
+            {
+                positions[pos].Highlight(highlight);
+            }
+        }
+
+        private int GetSectorForPosition(Vector2Int position)
+        {
+            return GetSectorForPosition(position.y * gridSize.x + position.x);
         }
 
         private List<int> GetPositionsForSector(int sector)
@@ -160,18 +180,18 @@ namespace Quantik
         }
 
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             Gizmos.DrawWireCube(transform.position, new Vector3(boardWidth, 0, boardWidth));
+
+            var location = transform.position + new Vector3(-boardWidth / 2 + paddingTop, 0, -boardWidth / 2 + paddingLeft);
 
             for (var k = 0; k < gridSize.y; k++)
             {
                 for (var i = 0; i < gridSize.x; i++)
                 {
-                    var location = transform.position;
-                    location += new Vector3(k * boardWidth / (gridSize.y - 1), 0, i * boardWidth / (gridSize.x - 1));
-                    location -= new Vector3(boardWidth / 2, 0, boardWidth / 2);
-                    Gizmos.DrawWireSphere(location, gizmoSphereWidth);
+                    var newLocation = location + new Vector3(2 * paddingTop * k, 0, 2 * paddingLeft * i);
+                    Gizmos.DrawWireSphere(newLocation, gizmoSphereWidth);
                 }
             }
         }
