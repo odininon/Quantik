@@ -1,3 +1,4 @@
+using Quantik;
 using UnityEngine;
 
 public class WinningUI : MonoBehaviour
@@ -13,10 +14,10 @@ public class WinningUI : MonoBehaviour
 
     public void HideMenu() => panel.SetActive(false);
 
-    public void SetWinner(int playerNumber)
+    public void SetWinner(Player player)
     {
         panel.SetActive(true);
 
-        text.text = text.text.Replace("%s", playerNumber.ToString());
+        text.text = text.text.Replace("%s", player.Name);
     }
 }

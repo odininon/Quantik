@@ -941,7 +941,6 @@ GameObject:
   m_Component:
   - component: {fileID: 733859614}
   - component: {fileID: 733859615}
-  - component: {fileID: 733859616}
   m_Layer: 0
   m_Name: GameBoard
   m_TagString: Untagged
@@ -983,27 +982,6 @@ MonoBehaviour:
   nodeOffset: 0.5
   gizmoSphereWidth: 0.43
   node: {fileID: 977313197952350859, guid: 1b7e2bca85adca44486a78dcceeea167, type: 3}
---- !u!114 &733859616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 733859613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b8ae13b93f56fb4e9d0eb69cdd49750, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gamePlayUI: {fileID: 564041107}
-  pauseMenu: {fileID: 1915273066}
-  validHighlight: {r: 1, g: 0.90592486, b: 0, a: 0}
-  invalidHighlight: {r: 1, g: 0, b: 0, a: 0}
-  player1Color: {r: 0, g: 1, b: 0.14495587, a: 0}
-  player2Color: {r: 0, g: 0.15586233, b: 1, a: 0}
-  gamePieceLoadout: {fileID: 11400000, guid: e820d339bccd1db489bca60ce4520e74, type: 2}
-  currentPlayer: 0
-  selectedPiece: -1
 --- !u!1001 &812156608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2692,7 +2670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1374357577}
-  gameManager: {fileID: 733859616}
+  gameManager: {fileID: 0}
 --- !u!114 &1915273067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2887,6 +2865,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030345726}
   m_CullTransparentMesh: 1
+--- !u!1 &2086701035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2086701036}
+  - component: {fileID: 2086701037}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2086701036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086701035}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2086701037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086701035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b8ae13b93f56fb4e9d0eb69cdd49750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamePlayUI: {fileID: 564041107}
+  pauseMenu: {fileID: 1915273066}
+  validHighlight: {r: 1, g: 0.90592486, b: 0, a: 0}
+  invalidHighlight: {r: 1, g: 0, b: 0, a: 0}
+  gamePieceLoadout: {fileID: 11400000, guid: e820d339bccd1db489bca60ce4520e74, type: 2}
+  selectedPiece: -1
+  players:
+  - {fileID: 11400000, guid: 2679e06bbd4f66c4b94a3699d711873f, type: 2}
+  - {fileID: 11400000, guid: 47c5232491b2a904d886b15c1950b584, type: 2}
+  currentPlayerIndex: 0
 --- !u!1 &2103709544
 GameObject:
   m_ObjectHideFlags: 0

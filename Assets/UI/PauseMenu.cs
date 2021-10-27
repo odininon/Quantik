@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Quantik
 {
@@ -10,6 +11,7 @@ namespace Quantik
 
         public void Start()
         {
+            gameManager = GameManager.Instance;
             HideMenu();
         }
 
@@ -25,7 +27,7 @@ namespace Quantik
         public void QuitGame()
         {
             HideMenu();
-            Application.Quit();
+            SceneManager.LoadScene("MainMenu");
         }
 
         public void Toggle()

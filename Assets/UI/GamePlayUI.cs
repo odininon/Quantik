@@ -22,16 +22,16 @@ public class GamePlayUI : MonoBehaviour
         originalPlayerText = currentPlayerText.text;
     }
 
-    public void SetCurrentPlayer(int playerNumber)
+    public void SetCurrentPlayer(Player player)
     {
-        currentPlayerText.text = originalPlayerText.Replace("%s", playerNumber.ToString());
+        currentPlayerText.text = originalPlayerText.Replace("%s", player.Name);
 
-        var ui = playerNumber == 1 ? player2 : player1;
+        // var ui = playerNumber == 1 ? player2 : player1;
 
-        ui.DisableButtons();
+        // ui.DisableButtons();
 
-        ui = playerNumber == 1 ? player1 : player2;
-        ui.EnableButtons();
+        // ui = playerNumber == 1 ? player1 : player2;
+        // ui.EnableButtons();
     }
 
     public void PieceWasSelected(int index)
@@ -46,9 +46,9 @@ public class GamePlayUI : MonoBehaviour
         ui.UpdatePlayerList(list);
     }
 
-    public void SetWinner(int playerNumber)
+    public void SetWinner(Player player)
     {
-        winningUI.SetWinner(playerNumber);
+        winningUI.SetWinner(player);
     }
 
     public void HideMenu() => winningUI.HideMenu();
